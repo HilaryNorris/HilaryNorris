@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>干净网络</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #fff;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            width: 100%;
+            height: 100vh;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #continue-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        /* Ensure image does not overflow */
+        .guide-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            max-height: 70vh; /* Limit max height to avoid overflow */
+        }
+    </style>
+    <script>
+        // 微信客户端检测函数
+        const isWeChat = () => {
+            const ua = navigator.userAgent.toLowerCase();
+            return ua.includes('micromessenger') || (ua.includes('wxwork') && ua.includes('wxapp'));
+        };
+
+        window.onload = () => {
+            // 获取当前 URL 的查询参数
+            const queryString = window.location.search;
+            console.log("Current URL query string:", queryString);  // Debugging log
+
+            const targetUrl = 'https://h5.tjcywlkj.cn/page/index.html';
+            const params = new URLSearchParams(queryString);
+            const inviteUid = params.get('inviteUid');
+            console.log("inviteUid:", inviteUid);  // Debugging log
+
+            if (!inviteUid) {
+                console.error("inviteUid parameter is missing!");
+                return;  // 如果没有 inviteUid，直接返回并停止执行
+            }
+
+            const messageDiv = document.getElementById('message');
+            if (isWeChat()) {
+                // 微信中显示引导内容和按钮
+                messageDiv.innerHTML = `
+                    <img src="https://uriahkennan.github.io/UriahKennan/20250725140649_29124.jpg" class="guide-img" alt="微信引导图片" loading="lazy" onload="imageLoaded()">
+                    <p>欢迎使用微信，点击继续按钮跳转</p>
+                    <button id="continue-btn">继续</button>
+                `;
+
+                // 用户点击按钮后跳转
+                document.getElementById('continue-btn').onclick = () => {
+                    console.log("Button clicked, redirecting..."); // Debugging log
+                    const redirectUrl = `${targetUrl}?inviteUid=${inviteUid}`;
+                    console.log("Redirecting to:", redirectUrl); // Debugging log
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;  // 进行跳转
+                    }, 500); // 延迟500ms跳转，确保页面渲染完成
+                };
+            } else {
+                console.log("Not WeChat, redirecting immediately..."); // Debugging log
+                // 非微信环境直接跳转
+                const redirectUrl = `${targetUrl}?inviteUid=${inviteUid}`;
+                console.log("Redirecting to:", redirectUrl); // Debugging log
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 500); // 延迟跳转，确保页面渲染完成
+            }
+        };
+
+        // 图片加载完成后的回调函数
+        const imageLoaded = () => {
+            console.log("Image loaded successfully!"); // Debugging log
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="message"></div>
+    </div>
+</body>
+</html>
